@@ -5,14 +5,65 @@ import "./App.css";
 function App() {
   const [inputNumber, setInputNumber] = useState("10");
 
-  console.log(inputNumber);
+  const [selectCategory, setSelectCategory] = useState("sports");
+
+  const [selectDifficulty, setSelectDifficulty] = useState("easy");
+
+  // useEffect(() => {
+  //   const fetchPost = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://thecocktaildb.com/api/json/v1/1/filter.php?i=Gin`
+  //       );
+  //       const posts = await response.json();
+  //       setCoctails(posts.drinks);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchPost();
+  // }, []);
+
+  function handleSelectCategory(e) {
+    setSelectCategory(e.target.value);
+  }
+
+  function handleSelectDifficulty(e) {
+    setSelectDifficulty(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(inputNumber, selectCategory, selectDifficulty);
+
+    let categoryNumber = 21;
+    if (selectCategory === "geography") categoryNumber = 22;
+    if (selectCategory === "mythology") categoryNumber = 20;
+    if (selectCategory === "art") categoryNumber = 25;
+
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(
+          `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}`
+        );
+        const posts = await response.json();
+        console.log(posts);
+        console.log(posts.results);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPost();
+  }
 
   return (
     <>
       <div className="form-container">
         <h1>Quiz setup</h1>
 
-        <form className="setup-form">
+        <form className="setup-form" onSubmit={handleSubmit}>
           <label>Number of questions</label>
           <input
             type="number"
@@ -21,7 +72,7 @@ function App() {
           />
           <br />
           <label>Category</label>
-          <select className="select-category">
+          <select className="select-category" onChange={handleSelectCategory}>
             <option value="sports">Sports</option>
             <option value="geography">Geography</option>
             <option value="mythology">Mythology</option>
@@ -29,7 +80,8 @@ function App() {
           </select>
           <br />
           <label>Difficulty</label>
-          <select className="select-ifficulty">
+          {/* prettier-ignore */}
+          <select className="select-difficulty" onChange={handleSelectDifficulty}>
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
