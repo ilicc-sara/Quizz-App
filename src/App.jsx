@@ -31,7 +31,7 @@ function App() {
         </form>
       </div>
 
-      <main className="questions-main">
+      <main className="questions-main hidden">
         <div className="score-tracker">Correct answers: 0 / 0</div>
         <h2 className="question">
           Who won the 2015 Formula 1 World Championship?
