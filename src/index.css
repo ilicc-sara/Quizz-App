@@ -1,10 +1,131 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 
-  color-scheme: light dark;
+  /* color-scheme: light dark; */
 }
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  color: #333;
+}
+
+.form-container {
+  margin: 15vh auto;
+  width: 500px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.432);
+  padding: 10px 30px;
+  border-radius: 10px;
+  padding-bottom: 20px;
+}
+
+.setup-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.setup-form button {
+  background-color: #ffb100;
+  height: 30px;
+  /* border: 0.5px solid #333; */
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.setup-form button:hover {
+  background-color: #d99800;
+}
+
+label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-family: inherit;
+}
+
+select {
+  background-color: #e6f2ef;
+  height: 30px;
+  border: 0.5px solid #333;
+  padding-left: 10px;
+}
+
+input {
+  background-color: #e6f2ef;
+  height: 30px;
+  border: 0.5px solid #333;
+  padding-left: 10px;
+}
+
+.questions-main {
+  margin: 15vh auto;
+  width: 750px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.432);
+  padding: 20px 30px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.score-tracker {
+  /* display: flex;
+  justify-content: end; */
+  /* justify-self: end; */
+  align-self: end;
+}
+
+.question {
+  /* width: 600px; */
+  text-align: center;
+  font-size: 28px;
+}
+
+.answers-container {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.single-question {
+  height: 40px;
+  background-color: #099268;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e8fff8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.single-question:hover {
+  background-color: #08674b;
+}
+
+.next-question-div {
+  align-self: end;
+}
+
+.next-question-btn {
+  background-color: #ffb100;
+  height: 30px;
+  /* border: 0.5px solid #333; */
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 180px;
+}
+
+.next-question-btn:hover {
+  background-color: #d99800;
 }
