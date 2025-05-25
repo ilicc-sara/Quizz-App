@@ -3,6 +3,10 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
+  const [inputNumber, setInputNumber] = useState("10");
+
+  console.log(inputNumber);
+
   return (
     <>
       <div className="form-container">
@@ -10,7 +14,11 @@ function App() {
 
         <form className="setup-form">
           <label>Number of questions</label>
-          <input type="number" value="10" />
+          <input
+            type="number"
+            value={inputNumber}
+            onChange={(e) => setInputNumber(e.target.value)}
+          />
           <br />
           <label>Category</label>
           <select className="select-category">
@@ -38,10 +46,10 @@ function App() {
         </h2>
 
         <div className="answers-container">
-          <p class="single-question">Nico Rosberg</p>
-          <p class="single-question">Sebastian Vettel</p>
-          <p class="single-question">Jenson Button</p>
-          <p class="single-question">Lewis Hamilton</p>
+          <p className="single-question">Nico Rosberg</p>
+          <p className="single-question">Sebastian Vettel</p>
+          <p className="single-question">Jenson Button</p>
+          <p className="single-question">Lewis Hamilton</p>
         </div>
 
         <div className="next-question-div">
