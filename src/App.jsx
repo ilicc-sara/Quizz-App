@@ -3,35 +3,44 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [inputNumber, setInputNumber] = useState("10");
+  // napraviti jedan stejt settings
 
-  const [selectCategory, setSelectCategory] = useState("sports");
-
-  const [selectDifficulty, setSelectDifficulty] = useState("easy");
+  const [settings, setSettings] = useState({
+    inputNumber: "10",
+    selectCategory: "sports",
+    selectDifficulty: "easy",
+  });
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
 
   const [question, setQuestion] = useState({});
 
-  const [number, setNumber] = useState(0);
+  // function handleSelectCategory(e) {
+  //   setSelectCategory(e.target.value);
+  // }
 
-  function handleSelectCategory(e) {
-    setSelectCategory(e.target.value);
-  }
+  // function handleSelectDifficulty(e) {
+  //   setSelectDifficulty(e.target.value);
+  // }
 
-  function handleSelectDifficulty(e) {
-    setSelectDifficulty(e.target.value);
-  }
+  // function handleSettings (e) {
+
+  // }
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(inputNumber, selectCategory, selectDifficulty);
+    // console.log(inputNumber, selectCategory, selectDifficulty);
+    console.log(settings);
+
+    const { inputNumber, selectCategory, selectDifficulty } = settings;
 
     let categoryNumber = "";
     if (selectCategory === "sports") categoryNumber = 21;
     if (selectCategory === "geography") categoryNumber = 22;
     if (selectCategory === "mythology") categoryNumber = 20;
     if (selectCategory === "art") categoryNumber = 25;
+
+    // const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
 
     const fetchPost = async () => {
       try {
@@ -41,15 +50,15 @@ function App() {
         const posts = await response.json();
         console.log(posts);
         console.log(posts.results);
-        console.log(posts.results[number].question);
-        console.log(posts.results[number].correct_answer);
-        console.log(posts.results[number].incorrect_answers);
+        console.log(posts.results[0].question);
+        console.log(posts.results[0].correct_answer);
+        console.log(posts.results[0].incorrect_answers);
 
         setDisplayQuestions(true);
         setQuestion({
-          question: posts.results[number].question,
-          correct_answer: posts.results[number].correct_answer,
-          incorrect_answers: posts.results[number].incorrect_answers,
+          question: posts.results[0].question,
+          correct_answer: posts.results[0].correct_answer,
+          incorrect_answers: posts.results[0].incorrect_answers,
         });
       } catch (error) {
         console.log(error);
@@ -58,6 +67,8 @@ function App() {
 
     fetchPost();
   }
+
+  function nextQuestion() {}
 
   return (
     <>
@@ -69,12 +80,23 @@ function App() {
             <label>Number of questions</label>
             <input
               type="number"
-              value={inputNumber}
-              onChange={(e) => setInputNumber(e.target.value)}
+              value={settings.inputNumber}
+              onChange={(e) =>
+                setSettings((prev) => {
+                  return { ...prev, inputNumber: e.target.value };
+                })
+              }
             />
             <br />
             <label>Category</label>
-            <select className="select-category" onChange={handleSelectCategory}>
+            <select
+              className="select-category"
+              onChange={(e) =>
+                setSettings((prev) => {
+                  return { ...prev, selectCategory: e.target.value };
+                })
+              }
+            >
               <option value="sports">Sports</option>
               <option value="geography">Geography</option>
               <option value="mythology">Mythology</option>
@@ -83,7 +105,9 @@ function App() {
             <br />
             <label>Difficulty</label>
             {/* prettier-ignore */}
-            <select className="select-difficulty" onChange={handleSelectDifficulty}>
+            <select className="select-difficulty" onChange={(e) => setSettings((prev) => {
+              return {...prev, selectDifficulty: e.target.value}
+            })}>
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
@@ -97,25 +121,23 @@ function App() {
       {displayQuestions && (
         <main className="questions-main">
           <div className="score-tracker">Correct answers: 0 / 0</div>
-          <h2 className="question">{question.question}</h2>
+          <h2
+            className="question"
+            dangerouslySetInnerHTML={{ __html: question.question }}
+          ></h2>
 
           <div className="answers-container">
             <p className="single-question" onClick={() => nextQuestion()}>
               {question.correct_answer}
             </p>
-            {/* <p className="single-question">Sebastian Vettel</p>
-            <p className="single-question">Jenson Button</p>
-            <p className="single-question">Lewis Hamilton</p> */}
 
             {question.incorrect_answers.map((answer, index) => (
               <p
                 key={index}
                 className="single-question"
                 onClick={() => nextQuestion()}
-              >
-                {" "}
-                {answer}{" "}
-              </p>
+                dangerouslySetInnerHTML={{ __html: answer }}
+              ></p>
             ))}
           </div>
 
