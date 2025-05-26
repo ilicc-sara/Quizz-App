@@ -80,6 +80,10 @@ input {
   align-self: end;
 }
 
+.score_number-of-questions {
+  font-weight: 500;
+}
+
 .question {
   /* width: 600px; */
   text-align: center;

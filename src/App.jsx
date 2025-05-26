@@ -3,8 +3,6 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  // napraviti jedan stejt settings
-
   const [settings, setSettings] = useState({
     inputNumber: "10",
     selectCategory: "sports",
@@ -15,21 +13,8 @@ function App() {
 
   const [question, setQuestion] = useState({});
 
-  // function handleSelectCategory(e) {
-  //   setSelectCategory(e.target.value);
-  // }
-
-  // function handleSelectDifficulty(e) {
-  //   setSelectDifficulty(e.target.value);
-  // }
-
-  // function handleSettings (e) {
-
-  // }
-
   function handleSubmit(e) {
     e.preventDefault();
-    // console.log(inputNumber, selectCategory, selectDifficulty);
     console.log(settings);
 
     const { inputNumber, selectCategory, selectDifficulty } = settings;
@@ -40,7 +25,7 @@ function App() {
     if (selectCategory === "mythology") categoryNumber = 20;
     if (selectCategory === "art") categoryNumber = 25;
 
-    // const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
+    const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
 
     const fetchPost = async () => {
       try {
@@ -120,7 +105,10 @@ function App() {
 
       {displayQuestions && (
         <main className="questions-main">
-          <div className="score-tracker">Correct answers: 0 / 0</div>
+          <div className="score-tracker">
+            Correct answers:{" "}
+            <span className="score_number-of-questions"> 0 / 0 </span>
+          </div>
           <h2
             className="question"
             dangerouslySetInnerHTML={{ __html: question.question }}
