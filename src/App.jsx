@@ -15,9 +15,11 @@ function App() {
 
   const [questions, setQuestions] = useState([]);
 
+  const [index, setIndex] = useState(0);
+
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(settings);
+    // console.log(settings);
 
     const { inputNumber, selectCategory, selectDifficulty } = settings;
 
@@ -36,7 +38,7 @@ function App() {
         );
         const posts = await response.json();
         // console.log(posts);
-        // console.log("array of objects from http request", posts.results);
+        console.log("array of objects from http request", posts.results);
         // console.log(posts.results[0].question);
         // console.log(posts.results[0].correct_answer);
         // console.log(posts.results[0].incorrect_answers);
@@ -73,44 +75,11 @@ function App() {
     fetchPost();
   }
 
-  function nextQuestion(index) {
-    // console.log(settings);
-    // const { inputNumber, selectCategory, selectDifficulty } = settings;
-    // let categoryNumber = "";
-    // if (selectCategory === "sports") categoryNumber = 21;
-    // if (selectCategory === "geography") categoryNumber = 22;
-    // if (selectCategory === "mythology") categoryNumber = 20;
-    // if (selectCategory === "art") categoryNumber = 25;
-    // // const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
-    // const fetchPost = async () => {
-    //   try {
-    //     const response = await fetch(
-    //       `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}`
-    //     );
-    //     const posts = await response.json();
-    //     console.log(posts);
-    //     console.log(posts.results);
-    //     console.log(posts.results[index].question);
-    //     console.log(posts.results[index].correct_answer);
-    //     console.log(posts.results[index].incorrect_answers);
-    //     setDisplayQuestions(true);
-    //     setQuestion({
-    //       question: posts.results[index].question,
-    //       correct_answer: posts.results[index].correct_answer,
-    //       incorrect_answers: posts.results[index].incorrect_answers,
-    //       answers: [
-    //         posts.results[index].correct_answer,
-    //         ...posts.results[index].incorrect_answers,
-    //       ],
-    //     });
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // fetchPost();
-  }
-
   console.log("array og objects", questions);
+
+  function nextQuestion() {
+    if (index !== questions.length - 1) setIndex((prev) => prev + 1);
+  }
 
   return (
     <>
@@ -164,25 +133,27 @@ function App() {
         <main className="questions-main">
           <div className="score-tracker">
             Correct answers:{" "}
-            <span className="score_number-of-questions"> 0 / 0 </span>
+            <span className="score_number-of-questions"> 0 / {index} </span>
           </div>
           <h2
             className="question"
-            dangerouslySetInnerHTML={{ __html: questions[0].question }}
+            dangerouslySetInnerHTML={{ __html: questions[index].question }}
           ></h2>
 
           <div className="answers-container">
             <p
               className="single-question"
-              onClick={() => nextQuestion(1)}
-              dangerouslySetInnerHTML={{ __html: questions[0].correct_answer }}
+              onClick={() => nextQuestion()}
+              dangerouslySetInnerHTML={{
+                __html: questions[index].correct_answer,
+              }}
             ></p>
 
-            {questions[0].incorrect_answers.map((answer, index) => (
+            {questions[index].incorrect_answers.map((answer, index) => (
               <p
                 key={index}
                 className="single-question"
-                onClick={() => nextQuestion(1)}
+                onClick={() => nextQuestion()}
                 dangerouslySetInnerHTML={{ __html: answer }}
               ></p>
             ))}
