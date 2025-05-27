@@ -11,7 +11,9 @@ function App() {
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
 
-  const [question, setQuestion] = useState(null);
+  // const [question, setQuestion] = useState(null);
+
+  const [questions, setQuestions] = useState([]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -33,23 +35,36 @@ function App() {
           `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}`
         );
         const posts = await response.json();
-        console.log(posts);
-        console.log(posts.results);
-        console.log(posts.results[0].question);
-        console.log(posts.results[0].correct_answer);
-        console.log(posts.results[0].incorrect_answers);
+        // console.log(posts);
+        // console.log("array of objects from http request", posts.results);
+        // console.log(posts.results[0].question);
+        // console.log(posts.results[0].correct_answer);
+        // console.log(posts.results[0].incorrect_answers);
 
         setDisplayQuestions(true);
 
-        setQuestion({
-          question: posts.results[0].question,
-          correct_answer: posts.results[0].correct_answer,
-          incorrect_answers: posts.results[0].incorrect_answers,
-          answers: [
-            posts.results[0].correct_answer,
-            ...posts.results[0].incorrect_answers,
-          ],
-        });
+        posts.results.map((post, index) =>
+          setQuestions((previous) => [
+            ...previous,
+            {
+              question: post.question,
+              correct_answer: post.correct_answer,
+              incorrect_answers: post.incorrect_answers,
+              answers: [post.correct_answer, ...post.incorrect_answers],
+              index: index,
+            },
+          ])
+        );
+
+        // setQuestion({
+        //   question: posts.results[0].question,
+        //   correct_answer: posts.results[0].correct_answer,
+        //   incorrect_answers: posts.results[0].incorrect_answers,
+        //   answers: [
+        //     posts.results[0].correct_answer,
+        //     ...posts.results[0].incorrect_answers,
+        //   ],
+        // });
       } catch (error) {
         console.log(error);
       }
@@ -59,50 +74,44 @@ function App() {
   }
 
   function nextQuestion(index) {
-    console.log(settings);
-
-    const { inputNumber, selectCategory, selectDifficulty } = settings;
-
-    let categoryNumber = "";
-    if (selectCategory === "sports") categoryNumber = 21;
-    if (selectCategory === "geography") categoryNumber = 22;
-    if (selectCategory === "mythology") categoryNumber = 20;
-    if (selectCategory === "art") categoryNumber = 25;
-
-    // const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
-
-    const fetchPost = async () => {
-      try {
-        const response = await fetch(
-          `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}`
-        );
-        const posts = await response.json();
-        console.log(posts);
-        console.log(posts.results);
-        console.log(posts.results[index].question);
-        console.log(posts.results[index].correct_answer);
-        console.log(posts.results[index].incorrect_answers);
-
-        setDisplayQuestions(true);
-
-        setQuestion({
-          question: posts.results[index].question,
-          correct_answer: posts.results[index].correct_answer,
-          incorrect_answers: posts.results[index].incorrect_answers,
-          answers: [
-            posts.results[index].correct_answer,
-            ...posts.results[index].incorrect_answers,
-          ],
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchPost();
+    // console.log(settings);
+    // const { inputNumber, selectCategory, selectDifficulty } = settings;
+    // let categoryNumber = "";
+    // if (selectCategory === "sports") categoryNumber = 21;
+    // if (selectCategory === "geography") categoryNumber = 22;
+    // if (selectCategory === "mythology") categoryNumber = 20;
+    // if (selectCategory === "art") categoryNumber = 25;
+    // // const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
+    // const fetchPost = async () => {
+    //   try {
+    //     const response = await fetch(
+    //       `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}`
+    //     );
+    //     const posts = await response.json();
+    //     console.log(posts);
+    //     console.log(posts.results);
+    //     console.log(posts.results[index].question);
+    //     console.log(posts.results[index].correct_answer);
+    //     console.log(posts.results[index].incorrect_answers);
+    //     setDisplayQuestions(true);
+    //     setQuestion({
+    //       question: posts.results[index].question,
+    //       correct_answer: posts.results[index].correct_answer,
+    //       incorrect_answers: posts.results[index].incorrect_answers,
+    //       answers: [
+    //         posts.results[index].correct_answer,
+    //         ...posts.results[index].incorrect_answers,
+    //       ],
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // fetchPost();
   }
 
-  console.log("array of answers", question);
+  console.log("array og objects", questions);
+
   return (
     <>
       {!displayQuestions && (
@@ -159,17 +168,17 @@ function App() {
           </div>
           <h2
             className="question"
-            dangerouslySetInnerHTML={{ __html: question.question }}
+            dangerouslySetInnerHTML={{ __html: questions[0].question }}
           ></h2>
 
           <div className="answers-container">
             <p
               className="single-question"
               onClick={() => nextQuestion(1)}
-              dangerouslySetInnerHTML={{ __html: question.correct_answer }}
+              dangerouslySetInnerHTML={{ __html: questions[0].correct_answer }}
             ></p>
 
-            {question.incorrect_answers.map((answer, index) => (
+            {questions[0].incorrect_answers.map((answer, index) => (
               <p
                 key={index}
                 className="single-question"
