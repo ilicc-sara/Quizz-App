@@ -11,7 +11,7 @@ function App() {
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
 
-  const [question, setQuestion] = useState({});
+  const [question, setQuestion] = useState(null);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -40,10 +40,15 @@ function App() {
         console.log(posts.results[0].incorrect_answers);
 
         setDisplayQuestions(true);
+
         setQuestion({
           question: posts.results[0].question,
           correct_answer: posts.results[0].correct_answer,
           incorrect_answers: posts.results[0].incorrect_answers,
+          answers: [
+            posts.results[0].correct_answer,
+            ...posts.results[0].incorrect_answers,
+          ],
         });
       } catch (error) {
         console.log(error);
@@ -53,8 +58,51 @@ function App() {
     fetchPost();
   }
 
-  function nextQuestion() {}
+  function nextQuestion(index) {
+    console.log(settings);
 
+    const { inputNumber, selectCategory, selectDifficulty } = settings;
+
+    let categoryNumber = "";
+    if (selectCategory === "sports") categoryNumber = 21;
+    if (selectCategory === "geography") categoryNumber = 22;
+    if (selectCategory === "mythology") categoryNumber = 20;
+    if (selectCategory === "art") categoryNumber = 25;
+
+    // const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
+
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(
+          `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}`
+        );
+        const posts = await response.json();
+        console.log(posts);
+        console.log(posts.results);
+        console.log(posts.results[index].question);
+        console.log(posts.results[index].correct_answer);
+        console.log(posts.results[index].incorrect_answers);
+
+        setDisplayQuestions(true);
+
+        setQuestion({
+          question: posts.results[index].question,
+          correct_answer: posts.results[index].correct_answer,
+          incorrect_answers: posts.results[index].incorrect_answers,
+          answers: [
+            posts.results[index].correct_answer,
+            ...posts.results[index].incorrect_answers,
+          ],
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPost();
+  }
+
+  console.log("array of answers", question);
   return (
     <>
       {!displayQuestions && (
@@ -115,15 +163,17 @@ function App() {
           ></h2>
 
           <div className="answers-container">
-            <p className="single-question" onClick={() => nextQuestion()}>
-              {question.correct_answer}
-            </p>
+            <p
+              className="single-question"
+              onClick={() => nextQuestion(1)}
+              dangerouslySetInnerHTML={{ __html: question.correct_answer }}
+            ></p>
 
             {question.incorrect_answers.map((answer, index) => (
               <p
                 key={index}
                 className="single-question"
-                onClick={() => nextQuestion()}
+                onClick={() => nextQuestion(1)}
                 dangerouslySetInnerHTML={{ __html: answer }}
               ></p>
             ))}
