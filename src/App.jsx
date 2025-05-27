@@ -45,18 +45,20 @@ function App() {
 
         setDisplayQuestions(true);
 
-        posts.results.map((post, index) =>
-          setQuestions((previous) => [
-            ...previous,
-            {
-              question: post.question,
-              correct_answer: post.correct_answer,
-              incorrect_answers: post.incorrect_answers,
-              answers: [post.correct_answer, ...post.incorrect_answers],
-              index: index,
-            },
-          ])
-        );
+        posts.results.map((post, index) => {
+          if (post.type === "multiple") {
+            setQuestions((previous) => [
+              ...previous,
+              {
+                question: post.question,
+                correct_answer: post.correct_answer,
+                incorrect_answers: post.incorrect_answers,
+                answers: [post.correct_answer, ...post.incorrect_answers],
+                index: index,
+              },
+            ]);
+          }
+        });
 
         // setQuestion({
         //   question: posts.results[0].question,
