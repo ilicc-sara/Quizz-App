@@ -10,16 +10,15 @@ function App() {
   });
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
-
   const [questions, setQuestions] = useState([]);
 
   const [index, setIndex] = useState(0);
-
   const [score, setScore] = useState(0);
+
+  const [gameOver, setGameOver] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    // console.log(settings);
 
     const { inputNumber, selectCategory, selectDifficulty } = settings;
 
@@ -36,6 +35,7 @@ function App() {
         const response = await fetch(
           `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}&type=multiple`
         );
+
         const posts = await response.json();
 
         console.log("array of objects from http request", posts.results);
@@ -64,14 +64,19 @@ function App() {
     fetchPost();
   }
 
-  console.log("array og objects", questions);
-
   function nextQuestion() {
     if (index !== questions.length - 1) setIndex((prev) => prev + 1);
 
     if (index === questions.length - 1) {
-      console.log("game over");
+      setGameOver(true);
     }
+  }
+
+  function playAgain() {
+    setDisplayQuestions(false);
+    setGameOver(false);
+    setIndex(0);
+    setScore(0);
   }
 
   return (
@@ -121,7 +126,6 @@ function App() {
           </form>
         </div>
       )}
-
       {displayQuestions && (
         <main className="questions-main">
           <div className="score-tracker">
@@ -168,6 +172,19 @@ function App() {
           </div>
         </main>
       )}
+
+      {gameOver && (
+        <div className="modal">
+          <h4>Game Over!</h4>
+          <p>
+            You answered {score} / {questions.length} or{" "}
+            {Math.round((score / questions.length) * 100)} % correctly!
+          </p>
+          <button onClick={() => playAgain()}>Play again</button>
+        </div>
+      )}
+
+      {gameOver && <div className="overlay"></div>}
     </>
   );
 }
