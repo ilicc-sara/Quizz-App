@@ -130,10 +130,9 @@ function App() {
         <main className="questions-main">
           <div className="score-tracker">
             Correct answers:{" "}
-            <span className="score_number-of-questions">
-              {" "}
-              {score} / {index + 1}{" "}
-            </span>
+            <b>
+              {score} / {index + 1}
+            </b>
           </div>
           <h2
             className="question"
@@ -175,12 +174,17 @@ function App() {
 
       {gameOver && (
         <div className="modal">
-          <h4>Game Over!</h4>
+          <h3>Game Over!</h3>
           <p>
-            You answered {score} / {questions.length} or{" "}
-            {Math.round((score / questions.length) * 100)} % correctly!
+            You answered{" "}
+            <b>
+              {score} / {questions.length}
+            </b>{" "}
+            or <b>{Math.round((score / questions.length) * 100)}%</b> correctly!
           </p>
-          <button onClick={() => playAgain()}>Play again</button>
+          <button className="play-again-btn" onClick={() => playAgain()}>
+            Play again?
+          </button>
         </div>
       )}
 
@@ -190,3 +194,9 @@ function App() {
 }
 
 export default App;
+
+// loading before api
+// shuffle answers
+// style modal
+// style button for modal
+// pitaj kako da iskoristis objekad da postavis inputei njihive brojeve

@@ -71,6 +71,7 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 40px;
 }
 
@@ -79,10 +80,6 @@ input {
   justify-content: end; */
   /* justify-self: end; */
   align-self: end;
-}
-
-.score_number-of-questions {
-  font-weight: 500;
 }
 
 .question {
@@ -161,6 +158,35 @@ input {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  gap: 20px;
+}
+
+.modal h3 {
+  font-size: 22px;
+}
+
+.play-again-btn {
+  background-color: #ffb100;
+  height: 35px;
+  width: 100px;
+  /* border: 0.5px solid #333; */
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.play-again-btn:hover {
+  background-color: #d99800;
 }
 
 .hidden {
