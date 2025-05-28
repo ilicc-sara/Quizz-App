@@ -62,8 +62,9 @@ input {
 }
 
 .questions-main {
-  margin: 15vh auto;
+  margin: 10vh auto;
   width: 750px;
+  min-height: 450px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.432);
   padding: 20px 30px;
   border-radius: 10px;

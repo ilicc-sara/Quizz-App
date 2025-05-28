@@ -11,11 +11,11 @@ function App() {
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
 
-  // const [question, setQuestion] = useState(null);
-
   const [questions, setQuestions] = useState([]);
 
   const [index, setIndex] = useState(0);
+
+  const [score, setScore] = useState(0);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -34,41 +34,28 @@ function App() {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}`
+          `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}&type=multiple`
         );
         const posts = await response.json();
-        // console.log(posts);
+
         console.log("array of objects from http request", posts.results);
-        // console.log(posts.results[0].question);
-        // console.log(posts.results[0].correct_answer);
-        // console.log(posts.results[0].incorrect_answers);
 
         setDisplayQuestions(true);
 
         posts.results.map((post, index) => {
-          if (post.type === "multiple") {
-            setQuestions((previous) => [
-              ...previous,
-              {
-                question: post.question,
-                correct_answer: post.correct_answer,
-                incorrect_answers: post.incorrect_answers,
-                answers: [post.correct_answer, ...post.incorrect_answers],
-                index: index,
-              },
-            ]);
-          }
+          // if (post.type === "multiple") {
+          setQuestions((previous) => [
+            ...previous,
+            {
+              question: post.question,
+              correct_answer: post.correct_answer,
+              incorrect_answers: post.incorrect_answers,
+              answers: [post.correct_answer, ...post.incorrect_answers],
+              index: index,
+            },
+          ]);
+          // }
         });
-
-        // setQuestion({
-        //   question: posts.results[0].question,
-        //   correct_answer: posts.results[0].correct_answer,
-        //   incorrect_answers: posts.results[0].incorrect_answers,
-        //   answers: [
-        //     posts.results[0].correct_answer,
-        //     ...posts.results[0].incorrect_answers,
-        //   ],
-        // });
       } catch (error) {
         console.log(error);
       }
@@ -81,6 +68,10 @@ function App() {
 
   function nextQuestion() {
     if (index !== questions.length - 1) setIndex((prev) => prev + 1);
+
+    if (index === questions.length - 1) {
+      console.log("game over");
+    }
   }
 
   return (
@@ -135,7 +126,10 @@ function App() {
         <main className="questions-main">
           <div className="score-tracker">
             Correct answers:{" "}
-            <span className="score_number-of-questions"> 0 / {index} </span>
+            <span className="score_number-of-questions">
+              {" "}
+              {score} / {index + 1}{" "}
+            </span>
           </div>
           <h2
             className="question"
@@ -145,7 +139,10 @@ function App() {
           <div className="answers-container">
             <p
               className="single-question"
-              onClick={() => nextQuestion()}
+              onClick={() => {
+                setScore((prev) => prev + 1);
+                nextQuestion();
+              }}
               dangerouslySetInnerHTML={{
                 __html: questions[index].correct_answer,
               }}
@@ -162,7 +159,12 @@ function App() {
           </div>
 
           <div className="next-question-div">
-            <button className="next-question-btn">Next question</button>
+            <button
+              className="next-question-btn"
+              onClick={() => nextQuestion()}
+            >
+              Next question
+            </button>
           </div>
         </main>
       )}
