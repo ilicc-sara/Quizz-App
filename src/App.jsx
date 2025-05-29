@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Form from "./Form.jsx";
 
 import "./App.css";
 
@@ -10,55 +11,13 @@ function App() {
   });
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
-  // napraviti konstantu allQuestions
-  // random broj i random broj treba biti od 0 do arr.length
-  // napravi folder components
-  // u njemu napraviti minimum :
-  // formu , quizz , i answers
+
   const [questions, setQuestions] = useState([]);
 
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
 
   const [gameOver, setGameOver] = useState(false);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    const { inputNumber, selectCategory, selectDifficulty } = settings;
-
-    const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
-    console.log(category["sports"]);
-
-    const fetchPost = async () => {
-      try {
-        const response = await fetch(
-          `https://opentdb.com/api.php?amount=${inputNumber}&category=${category[selectCategory]}&difficulty=${selectDifficulty}&type=multiple`
-        );
-
-        const posts = await response.json();
-
-        setDisplayQuestions(true);
-
-        posts.results.map((post, index) => {
-          setQuestions((previous) => [
-            ...previous,
-            {
-              question: post.question,
-              correct_answer: post.correct_answer,
-              incorrect_answers: post.incorrect_answers,
-              answers: [post.correct_answer, ...post.incorrect_answers],
-              index: index,
-            },
-          ]);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchPost();
-  }
 
   function handleCheckAnswer(answer) {
     if (index !== questions.length - 1) setIndex((prev) => prev + 1);
@@ -98,49 +57,12 @@ function App() {
   return (
     <>
       {!displayQuestions && (
-        <div className="form-container">
-          <h1>Quiz setup</h1>
-
-          <form className="setup-form" onSubmit={handleSubmit}>
-            <label>Number of questions</label>
-            <input
-              type="number"
-              value={settings.inputNumber}
-              onChange={(e) =>
-                setSettings((prev) => {
-                  return { ...prev, inputNumber: e.target.value };
-                })
-              }
-            />
-            <br />
-            <label>Category</label>
-            <select
-              className="select-category"
-              onChange={(e) =>
-                setSettings((prev) => {
-                  return { ...prev, selectCategory: e.target.value };
-                })
-              }
-            >
-              <option value="sports">Sports</option>
-              <option value="geography">Geography</option>
-              <option value="mythology">Mythology</option>
-              <option value="art">Art</option>
-            </select>
-            <br />
-            <label>Difficulty</label>
-            {/* prettier-ignore */}
-            <select className="select-difficulty" onChange={(e) => setSettings((prev) => {
-              return {...prev, selectDifficulty: e.target.value}
-            })}>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-            <br />
-            <button>Start playing!</button>
-          </form>
-        </div>
+        <Form
+          setQuestions={setQuestions}
+          settings={settings}
+          setSettings={setSettings}
+          setDisplayQuestions={setDisplayQuestions}
+        />
       )}
       {displayQuestions && (
         <main className="questions-main">
