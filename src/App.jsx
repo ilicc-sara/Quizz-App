@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Form from "./Form.jsx";
 import Quizz from "./Quizz.jsx";
+import GameOverModal from "./GameOverModal.jsx";
 
 import "./App.css";
 
@@ -20,23 +21,19 @@ function App() {
 
   const [gameOver, setGameOver] = useState(false);
 
-  function handleCheckAnswer(answer) {
-    if (index !== questions.length - 1) setIndex((prev) => prev + 1);
-
-    if (index === questions.length - 1) {
-      setGameOver(true);
-    }
-
-    if (questions[index].correct_answer === answer)
-      setScore((prev) => prev + 1);
-  }
-
   function nextQuestion() {
     if (index !== questions.length - 1) setIndex((prev) => prev + 1);
 
     if (index === questions.length - 1) {
       setGameOver(true);
     }
+  }
+
+  function handleCheckAnswer(answer) {
+    nextQuestion();
+
+    if (questions[index].correct_answer === answer)
+      setScore((prev) => prev + 1);
   }
 
   function playAgain() {
@@ -68,19 +65,11 @@ function App() {
       )}
 
       {gameOver && (
-        <div className="modal">
-          <h3>Game Over!</h3>
-          <p>
-            You answered{" "}
-            <b>
-              {score} / {questions.length}
-            </b>{" "}
-            or <b>{Math.round((score / questions.length) * 100)}%</b> correctly!
-          </p>
-          <button className="play-again-btn" onClick={() => playAgain()}>
-            Play again?
-          </button>
-        </div>
+        <GameOverModal
+          score={score}
+          questions={questions}
+          playAgain={playAgain}
+        />
       )}
 
       {gameOver && <div className="overlay"></div>}

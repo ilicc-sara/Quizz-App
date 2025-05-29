@@ -27,7 +27,7 @@ function Quizz(props) {
         {shuffle(questions[index].answers).map((answer, index) => (
           <p
             key={index}
-            className="single-question"
+            className="single-answer"
             onClick={() => handleCheckAnswer(answer)}
             dangerouslySetInnerHTML={{ __html: answer }}
           ></p>
