@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Form from "./Form.jsx";
+import Quizz from "./Quizz.jsx";
 
 import "./App.css";
 
@@ -46,14 +47,6 @@ function App() {
     setScore(0);
   }
 
-  const shuffle = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
-
   return (
     <>
       {!displayQuestions && (
@@ -65,58 +58,13 @@ function App() {
         />
       )}
       {displayQuestions && (
-        <main className="questions-main">
-          <div className="score-tracker">
-            Correct answers:{" "}
-            <b>
-              {score} / {index + 1}
-            </b>
-          </div>
-          <h2
-            className="question"
-            dangerouslySetInnerHTML={{ __html: questions[index].question }}
-          ></h2>
-
-          <div className="answers-container">
-            {/* <p
-              className="single-question"
-              onClick={() => {
-                setScore((prev) => prev + 1);
-                nextQuestion();
-              }}
-              dangerouslySetInnerHTML={{
-                __html: questions[index].correct_answer,
-              }}
-            ></p>
-
-            {questions[index].incorrect_answers.map((answer, index) => (
-              <p
-                key={index}
-                className="single-question"
-                onClick={() => nextQuestion()}
-                dangerouslySetInnerHTML={{ __html: answer }}
-              ></p>
-            ))} */}
-
-            {shuffle(questions[index].answers).map((answer, index) => (
-              <p
-                key={index}
-                className="single-question"
-                onClick={() => handleCheckAnswer(answer)}
-                dangerouslySetInnerHTML={{ __html: answer }}
-              ></p>
-            ))}
-          </div>
-
-          <div className="next-question-div">
-            <button
-              className="next-question-btn"
-              onClick={() => nextQuestion()}
-            >
-              Next question
-            </button>
-          </div>
-        </main>
+        <Quizz
+          questions={questions}
+          score={score}
+          index={index}
+          handleCheckAnswer={handleCheckAnswer}
+          nextQuestion={nextQuestion}
+        />
       )}
 
       {gameOver && (
@@ -141,7 +89,3 @@ function App() {
 }
 
 export default App;
-
-// loading before api
-// shuffle answers
-// pitaj kako da iskoristis objekad da postavis inpute i njihive brojeve
