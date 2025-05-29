@@ -10,6 +10,11 @@ function App() {
   });
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
+  // napraviti konstantu allQuestions
+  // random broj i random broj treba biti od 0 do arr.length
+  // napravi folder components
+  // u njemu napraviti minimum :
+  // formu , quizz , i answers
   const [questions, setQuestions] = useState([]);
 
   const [index, setIndex] = useState(0);
@@ -22,28 +27,20 @@ function App() {
 
     const { inputNumber, selectCategory, selectDifficulty } = settings;
 
-    let categoryNumber = "";
-    if (selectCategory === "sports") categoryNumber = 21;
-    if (selectCategory === "geography") categoryNumber = 22;
-    if (selectCategory === "mythology") categoryNumber = 20;
-    if (selectCategory === "art") categoryNumber = 25;
-
     const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
+    console.log(category["sports"]);
 
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `https://opentdb.com/api.php?amount=${inputNumber}&category=${categoryNumber}&difficulty=${selectDifficulty}&type=multiple`
+          `https://opentdb.com/api.php?amount=${inputNumber}&category=${category[selectCategory]}&difficulty=${selectDifficulty}&type=multiple`
         );
 
         const posts = await response.json();
 
-        console.log("array of objects from http request", posts.results);
-
         setDisplayQuestions(true);
 
         posts.results.map((post, index) => {
-          // if (post.type === "multiple") {
           setQuestions((previous) => [
             ...previous,
             {
@@ -54,7 +51,6 @@ function App() {
               index: index,
             },
           ]);
-          // }
         });
       } catch (error) {
         console.log(error);
@@ -62,6 +58,17 @@ function App() {
     };
 
     fetchPost();
+  }
+
+  function handleCheckAnswer(answer) {
+    if (index !== questions.length - 1) setIndex((prev) => prev + 1);
+
+    if (index === questions.length - 1) {
+      setGameOver(true);
+    }
+
+    if (questions[index].correct_answer === answer)
+      setScore((prev) => prev + 1);
   }
 
   function nextQuestion() {
@@ -75,9 +82,18 @@ function App() {
   function playAgain() {
     setDisplayQuestions(false);
     setGameOver(false);
+    setQuestions([]);
     setIndex(0);
     setScore(0);
   }
+
+  const shuffle = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
   return (
     <>
@@ -140,7 +156,7 @@ function App() {
           ></h2>
 
           <div className="answers-container">
-            <p
+            {/* <p
               className="single-question"
               onClick={() => {
                 setScore((prev) => prev + 1);
@@ -156,6 +172,15 @@ function App() {
                 key={index}
                 className="single-question"
                 onClick={() => nextQuestion()}
+                dangerouslySetInnerHTML={{ __html: answer }}
+              ></p>
+            ))} */}
+
+            {shuffle(questions[index].answers).map((answer, index) => (
+              <p
+                key={index}
+                className="single-question"
+                onClick={() => handleCheckAnswer(answer)}
                 dangerouslySetInnerHTML={{ __html: answer }}
               ></p>
             ))}
@@ -197,6 +222,4 @@ export default App;
 
 // loading before api
 // shuffle answers
-// style modal
-// style button for modal
-// pitaj kako da iskoristis objekad da postavis inputei njihive brojeve
+// pitaj kako da iskoristis objekad da postavis inpute i njihive brojeve
