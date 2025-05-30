@@ -14,6 +14,8 @@ function App() {
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const [questions, setQuestions] = useState([]);
 
   const [index, setIndex] = useState(0);
@@ -46,14 +48,17 @@ function App() {
 
   return (
     <>
+      {loading && <div class="loader"></div>}
       {!displayQuestions && (
         <Form
           setQuestions={setQuestions}
           settings={settings}
           setSettings={setSettings}
           setDisplayQuestions={setDisplayQuestions}
+          setLoading={setLoading}
         />
       )}
+
       {displayQuestions && (
         <Quizz
           questions={questions}
@@ -78,3 +83,7 @@ function App() {
 }
 
 export default App;
+
+// kako postaviti loading spinner u fetch funkciji
+// kada bih htela da dodam answers komponentu, da li bih je importovala u App.jsx ili u parent komponentu (quizz)
+// zasto nisam koristila useEffect u ovom slucaju za loadovanje API-a

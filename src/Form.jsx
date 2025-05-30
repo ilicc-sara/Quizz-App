@@ -2,11 +2,11 @@ import React, { useState } from "react";
 
 function Form(props) {
   // prettier-ignore
-  const {  settings, setSettings, setQuestions, setDisplayQuestions } = props;
+  const {  settings, setSettings, setQuestions, setDisplayQuestions, setLoading } = props;
 
   function handleSubmit(e) {
     e.preventDefault();
-
+    setLoading(true);
     const { inputNumber, selectCategory, selectDifficulty } = settings;
 
     const category = { sports: 21, geography: 22, mythology: 20, art: 25 };
@@ -33,6 +33,7 @@ function Form(props) {
             },
           ]);
         });
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
