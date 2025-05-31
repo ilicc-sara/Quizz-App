@@ -13,15 +13,13 @@ function App() {
   });
 
   const [displayQuestions, setDisplayQuestions] = useState(false);
-
+  const [gameOver, setGameOver] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [questions, setQuestions] = useState([]);
 
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
-
-  const [gameOver, setGameOver] = useState(false);
 
   function nextQuestion() {
     if (index !== questions.length - 1) setIndex((prev) => prev + 1);
@@ -49,6 +47,7 @@ function App() {
   return (
     <>
       {loading && <div class="loader"></div>}
+
       {!displayQuestions && (
         <Form
           setQuestions={setQuestions}

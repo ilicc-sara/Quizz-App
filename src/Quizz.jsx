@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Answer from "./Answer";
 
 function Quizz(props) {
   const { questions, score, index, handleCheckAnswer, nextQuestion } = props;
@@ -25,12 +26,11 @@ function Quizz(props) {
 
       <div className="answers-container">
         {shuffle(questions[index].answers).map((answer, index) => (
-          <p
+          <Answer
             key={index}
-            className="single-answer"
-            onClick={() => handleCheckAnswer(answer)}
-            dangerouslySetInnerHTML={{ __html: answer }}
-          ></p>
+            answer={answer}
+            handleCheckAnswer={handleCheckAnswer}
+          />
         ))}
       </div>
 
