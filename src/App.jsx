@@ -82,7 +82,3 @@ function App() {
 }
 
 export default App;
-
-// kako postaviti loading spinner u fetch funkciji
-// kada bih htela da dodam answers komponentu, da li bih je importovala u App.jsx ili u parent komponentu (quizz)
-// zasto nisam koristila useEffect u ovom slucaju za loadovanje API-a
